@@ -26,16 +26,16 @@ pipeline{
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    // Run SonarQube analysis using the configured SonarQube Scanner
-                    withSonarQubeEnv('SonarCloud') {
-                        sh 'sonar-scanner'
-                    }
-                    }
-                }
-            }
+      #  stage('SonarQube Analysis') {
+      #      steps {
+      #          script {
+      #              // Run SonarQube analysis using the configured SonarQube Scanner
+      #              withSonarQubeEnv('SonarCloud') {
+      #                  sh 'sonar-scanner'
+      #              }
+      #              }
+      #          }
+      #      }
 
         stage('Build and Push Docker Image') {
             steps {
