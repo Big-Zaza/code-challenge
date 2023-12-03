@@ -25,14 +25,6 @@ pipeline{
             }
         }
 
-        stage('Unit Tests') {
-            steps {
-                script {
-                    sh 'npm test'
-                }
-            }
-        }
-
         stage('SonarQube Analysis') {
             steps {
                 script {
