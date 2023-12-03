@@ -5,7 +5,7 @@ pipeline{
         DOCKER_COMPOSE_VERSION = '1.29.2'
         SONARQUBE_SCANNER_VERSION = '4.6.2.2472'
     }
-    
+
     stages{
         stage('Checkout') {
             steps {
@@ -16,6 +16,7 @@ pipeline{
         stage('Install Dependencies') {
             steps {
                 script {
+                    sh 'brew install npm'
                     sh 'npm install'
                 }
             }
