@@ -8,7 +8,7 @@ pipeline{
     tools {
         nodejs 'NodeJS 21.3.0'
         // Use the SonarQube Scanner tool
-        sonarqubeScanner 'SonarQube Scanner 5.0.1.3006'
+        SonarQube Scanner 'SonarQube Scanner 5.0.1.3006'
     }
 
     stages{
