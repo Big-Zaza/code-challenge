@@ -3,7 +3,6 @@ pipeline{
 
     environment {
         DOCKER_COMPOSE_VERSION = '1.29.2'
-        SONARQUBE_SCANNER_VERSION = '4.6.2.2472'
     }
 
     tools {
@@ -49,4 +48,4 @@ pipeline{
             }
         }
     }
-}
+
