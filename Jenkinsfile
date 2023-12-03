@@ -37,11 +37,30 @@ pipeline{
                 }
             }
 */
-        stage('Debugging') {
+        stage('Read/Increment Version') {
             steps {
                 script {
-                    sh 'echo $PATH'
-                    sh 'docker-compose --version'
+                    def versionFile = 'version.txt'
+                    def currentVersion = readFile(versionFile).trim()
+                    
+                    if (currentVersion == '') {
+                        currentVersion = '1'
+                    } else {
+                        currentVersion = currentVersion.toInteger() + 1
+                    }
+
+                    DOCKER_IMAGE_TAG = "v${currentVersion}"
+                    writeFile file: versionFile, text: currentVersion.toString()
+                }
+            }
+        }
+
+        stage('Build and Push') {
+            steps {
+                script {
+                    // Build and tag the Docker images
+                    sh "docker-compose build"
+                    sh "docker tag your-service:latest $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
                 }
             }
         }
