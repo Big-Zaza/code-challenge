@@ -37,6 +37,15 @@ pipeline{
                 }
             }
 */
+        stage('Debugging') {
+            steps {
+                script {
+                    sh 'echo $PATH'
+                    sh 'docker-compose --version'
+                }
+            }
+        }
+        
         stage('Build and Push Docker Image') {
             steps {
                 script {
