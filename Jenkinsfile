@@ -40,17 +40,11 @@ pipeline{
         stage('Read/Increment Version') {
             steps {
                 script {
-                    def versionFile = 'version.txt'
-                    def currentVersion = readFile(versionFile).trim()
-                    
-                    if (currentVersion == '') {
-                        currentVersion = '1'
-                    } else {
-                        currentVersion = currentVersion.toInteger() + 1
-                    }
-
-                    DOCKER_IMAGE_TAG = "v${currentVersion}"
-                    writeFile file: versionFile, text: currentVersion.toString()
+                    // Generate a version using a fixed prefix and Git commit hash
+                    def commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    def version = "v${commitHash}"
+                    echo "Generated version: $version"
+                    DOCKER_IMAGE_TAG = version
                 }
             }
         }
@@ -67,8 +61,7 @@ pipeline{
         
         stage('Build and Push Docker Image') {
             steps {
-                script {
-                    sh 'docker-compose build'
+                script { 
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u ${DOCKER_LOGIN_USERNAME} -p ${DOCKER_LOGIN_PASSWORD}"
                     }
