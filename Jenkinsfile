@@ -3,7 +3,7 @@ pipeline{
 
     environment {
         DOCKER_COMPOSE_VERSION = '1.29.2'
-        DOCKER_IMAGE_TAG = ""
+     
     }
 
   //  tools {
@@ -55,7 +55,7 @@ pipeline{
                 script {
                     // Build and tag the Docker images
                     sh "docker-compose build"
-                    sh "docker tag your-service:latest $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
+                    sh "docker tag $DOCKER_IMAGE $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
                 }
             }
         }
