@@ -3,6 +3,7 @@ pipeline{
 
     environment {
         DOCKER_COMPOSE_VERSION = '1.29.2'
+        DOCKER_IMAGE_TAG = ""
     }
 
   //  tools {
