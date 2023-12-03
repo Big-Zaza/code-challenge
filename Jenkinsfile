@@ -6,7 +6,7 @@ pipeline{
         SONARQUBE_SCANNER_VERSION = '4.6.2.2472'
     }
 
-     tools {
+    tools {
         nodejs '21.0.0'
     }
 
