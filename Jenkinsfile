@@ -49,11 +49,11 @@ pipeline{
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    sh 'docker-compose build'
+                    sh 'sudo docker-compose build'
                     withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS', variable: 'DOCKER_LOGIN')]) {
-                        sh "docker login -u ${DOCKER_LOGIN_USERNAME} -p ${DOCKER_LOGIN_PASSWORD}"
+                        sh "sudo docker login -u ${DOCKER_LOGIN_USERNAME} -p ${DOCKER_LOGIN_PASSWORD}"
                     }
-                    sh 'docker-compose push'
+                    sh 'sudo docker-compose push'
                 }
             }
         }
