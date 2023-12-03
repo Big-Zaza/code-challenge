@@ -72,7 +72,7 @@ pipeline{
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "docker login -u ${DOCKER_LOGIN_USERNAME} -p ${DOCKER_LOGIN_PASSWORD}"
                     }
-                    sh 'docker-compose push'
+                    sh "docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
                 }
             }
         }
