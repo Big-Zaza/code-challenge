@@ -6,6 +6,10 @@ pipeline{
         SONARQUBE_SCANNER_VERSION = '4.6.2.2472'
     }
 
+     tools {
+        nodejs '21.0.0'
+    }
+
     stages{
         stage('Checkout') {
             steps {
@@ -16,7 +20,6 @@ pipeline{
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh 'brew install npm'
                     sh 'npm install'
                 }
             }
