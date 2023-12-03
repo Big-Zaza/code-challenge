@@ -28,9 +28,10 @@ pipeline{
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQubeServer') {
-                        sh "npm install -g sonarqube-scanner@${SONARQUBE_SCANNER_VERSION}"
+                    // Run SonarQube analysis using the configured SonarQube Scanner
+                    withSonarQubeEnv('SonarCloud') {
                         sh 'sonar-scanner'
+                    }
                     }
                 }
             }
