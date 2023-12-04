@@ -68,8 +68,9 @@ pipeline{
                 script { 
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin docker.io"
+                    sh "docker push bigzaza/mern-crud:v2"    
                     }
-                    sh "docker push bigzaza/mern-crud:v2"
+                    
                 //    $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
                 }
             }
