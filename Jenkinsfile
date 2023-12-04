@@ -2,8 +2,8 @@ pipeline{
     agent any
 
     environment {
-        DOCKER_COMPOSE_VERSION = '1.29.2'
-     
+        DOCKER_IMAGE_TAG = "" // Initialize with an empty string
+        DOCKERHUB_CREDENTIALS = credentials('DOCKERHUB_CREDENTIALS_ID')
     }
 
   //  tools {
