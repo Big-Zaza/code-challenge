@@ -76,7 +76,7 @@ pipeline {
         stage('Push image') {
             steps {
                 script {
-                    withDockerRegistry([ credentialsId: 'DOCKERHUB_CREDENTIALS', url: "" ]) {
+                    withCredentials([ credentialsId: 'DOCKERHUB_CREDENTIALS', url: "" ]) {
                     sh "docker push bigzaza/mern-crud:v2"
         }
     }
