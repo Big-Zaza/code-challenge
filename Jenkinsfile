@@ -55,7 +55,8 @@ pipeline{
                 script {
                     // Build and tag the Docker images
                     sh "docker-compose build"
-                    sh "docker tag mern-crud $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
+                    sh "docker tag mern-crud bigzaza/mern-crud
+                  //  $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
                 }
             }
         }
