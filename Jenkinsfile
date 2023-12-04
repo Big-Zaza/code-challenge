@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent any
 
     environment {
@@ -86,7 +86,7 @@ pipeline{
                 //    $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
             }
             }
-        }
+        
     
 
     
