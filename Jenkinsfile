@@ -4,8 +4,8 @@ pipeline{
     environment {
         DOCKER_IMAGE_TAG = "" // Initialize with an empty string
         DOCKERHUB_CREDENTIALS_ID = 'DOCKERHUB_CREDENTIALS'
-        DOCKER_USERNAME = DOCKERHUB_CREDENTIALS.username
-        DOCKER_PASSWORD = DOCKERHUB_CREDENTIALS.password
+        DOCKER_USERNAME = 'DOCKERHUB_CREDENTIALS.username'
+        DOCKER_PASSWORD = 'DOCKERHUB_CREDENTIALS.password'
     }
 
   //  tools {
