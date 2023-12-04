@@ -70,17 +70,21 @@ pipeline{
                     sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin docker.io"                    
                     }
                 }
-                }
-            }
+             }
+        }
 
         stage('Push image') {
-        withDockerRegistry([ credentialsId: 'DOCKERHUB_CREDENTIALS', url: "" ]) {
-        sh "docker push bigzaza/mern-crud:v2"
+            steps {
+                script {
+                    withDockerRegistry([ credentialsId: 'DOCKERHUB_CREDENTIALS', url: "" ]) {
+                    sh "docker push bigzaza/mern-crud:v2"
         }
-            
+    }
+ }              
+}            
                     
                 //    $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-                }
+            }
             }
         }
     
