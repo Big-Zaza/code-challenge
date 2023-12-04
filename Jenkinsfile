@@ -4,6 +4,8 @@ pipeline{
     environment {
         DOCKER_IMAGE_TAG = "" // Initialize with an empty string
         DOCKERHUB_CREDENTIALS_ID = 'DOCKERHUB_CREDENTIALS'
+        DOCKER_USERNAME = DOCKERHUB_CREDENTIALS.username
+        DOCKER_PASSWORD = DOCKERHUB_CREDENTIALS.password
     }
 
   //  tools {
@@ -65,7 +67,7 @@ pipeline{
             steps {
                 script { 
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker login -u ${DOCKER_LOGIN_USERNAME} -p ${DOCKER_LOGIN_PASSWORD}"
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
                     }
                     sh "docker push bigzaza/mern-crud:v2"
                 //    $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
