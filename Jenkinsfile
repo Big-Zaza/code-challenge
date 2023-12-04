@@ -67,25 +67,27 @@ pipeline {
             steps {
                 script { 
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin docker.io"                    
+                    sh "echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin docker.io"    
+                    sh "docker push bigzaza/mern-crud:v2"    
                     }
                 }
              }
         }
 
-        stage('Push image') {
+        stage('Run Docker container') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh "docker push bigzaza/mern-crud:v2"
+                    sh "docker-compose up"
+                }
+            }
         }
     }
- }              
-}            
+}
+               
                     
-                //    $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-            }
-            }
+                
+            
+            
         
     
 
