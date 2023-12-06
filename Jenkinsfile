@@ -52,7 +52,7 @@ pipeline {
             }
         }
 
-        stage('Build and Push') {
+        stage('Build and Tag') {
             steps {
                 script {
                     // Build and tag the Docker images
@@ -63,7 +63,7 @@ pipeline {
             }
         }
         
-        stage('Build and Push Docker Image') {
+        stage('Push and archive Docker Image') {
             steps {
                 script { 
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
