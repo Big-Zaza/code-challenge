@@ -2,17 +2,6 @@
 
 This repo contains the source code to be able to provision and deploy an Infrastructure with a CI/CD pipeline deployed.
 
-
-![Node Version](https://img.shields.io/badge/node-v20+-green.svg)
-![NPM Version](https://img.shields.io/badge/npm-v9+-blue.svg)
-![MongoDB Version](https://img.shields.io/badge/mongodb-v7+-yellowgreen.svg)
-![Mongoose Version](https://img.shields.io/badge/mongoose-v7+-red.svg)
-
-Demo: [https://mern-crud-mpfr.onrender.com](https://mern-crud-mpfr.onrender.com)
-
-![MERN CRUD Screenshot](screenshot.png)
-
-
 ## Instructions
 
 Fork, then download or clone the repo.
@@ -116,52 +105,93 @@ And the pipeline should be able to run successfully.
 
 To verify if the application has been deployed successfully to your instances, you can try accessing the UI [http://publicip:8080](http://publicip:8080) 
 
-## Monitoring
+## Monitoring our infrastructure and applications with Prometheus and Grafana
 
-There's 
-If you want to modify the front-end, go to *react-src* folder via the terminal.
+Our goal as a DevOps engineer is to be able to achieve highly available applications and to be able to achieve that, we'll have to ensure that each of our applicatios are thourougly monitored so that before an issue in the application arises or a downtime, we should have already detected it before our users our clients notice it.
+That's why we use monitoring tools like Prometheus and Grafana for ensuring the health, performance, and availability of applications and infrastructure.
 
+So in one of our ec2 instances, we'll install and setup the binaries of prometheus using the prometheus_setup.sh script, grafana using the grafana_setup.sh, nodeexporter using the nodeexporter_setup.sh, alertmanager using the alertmanager_setup.sh which can all be found in this repository.
+
+You can also install cadvisor using this command
 ```bash
 cd react-src
 
 ```
 
-Install the dependencies required by React.
+Once that is done you can access the Prometheus UI via [http://publicip:9090](http://publicip:9090) 
+
+<img width="1435" alt="Screen Shot 2023-12-07 at 09 02 04" src="https://github.com/Big-Zaza/code-challenge/assets/92643385/83ffbfae-d052-48a7-804b-8da7e3003937">
+
+
+You can access the Grafana UI via [http://publicip:3000](http://publicip:3000) 
+
+<img width="1438" alt="Screen Shot 2023-12-07 at 09 02 24" src="https://github.com/Big-Zaza/code-challenge/assets/92643385/e295942a-a296-4aea-abe2-8a95bef64d32">
+
+
+You can access the Alertmanager UI via [http://publicip:9093](http://publicip:9093) 
+
+<img width="1413" alt="Screen Shot 2023-12-07 at 09 02 44" src="https://github.com/Big-Zaza/code-challenge/assets/92643385/510f2fcd-ea8b-4f91-9319-8e9eadf9b0e0">
+
+We're going to create some rules using yaml that will define a condition for which an alert should trigger, like for example if our instances or our docker containers have a downtime.
+The rules are found in this repo using "instance_monitoring.yaml" and "container_monitoring.yaml"
+
+We're then going to modify the prometheus.yaml so as to configure our node_exporter, alert_manager, cadvisor and as well add our rules.
+
+It's possible that one of our servers can have a downtime and prometheus fires an alert, but we might not notice it because we might be busy working on other things.
+
+That is why we chave to create an alertmanager.yml and configure a communication channel in which those alerts are going to be sent to by the alertmanager so that we might easily notice them. And for this project we used slack as our communication channel since it's one of the most popular collaboaration platforms.
+
+To do it, you need to follow this instructions.
+
+Login to your Slack account and create a Slack channel called alerts.
+
+Create a new Slack app from scratch. Give it a name Prometheus and select a workspace.
+
+Next, we need to enable incoming webhooks. Then add webhook to the workspace.
+<img width="691" alt="Screen Shot 2023-12-07 at 10 45 13" src="https://github.com/Big-Zaza/code-challenge/assets/92643385/b39889f4-3a54-40ca-84e1-3158693878ac">
+
+The last thing, we need to copy Webhook URL and use it in Alertmanager config.
+
+Now, update alertmanager.yml config to include a new route to send alerts to the Slack, and you can see that in the alertmanager.yaml
+
+Once everything is done, we can build our dashboard with Grafana for better observability.
+
+<img width="1433" alt="Screen Shot 2023-12-07 at 09 12 51" src="https://github.com/Big-Zaza/code-challenge/assets/92643385/a68d7e05-8fb2-44d0-905f-23d7635a2b6b">
+
+
+# Bash script to automate the backup process for the MongoDB database to an ec2 instance
+
 ```bash
-npm install
+#!/bin/bash
+
+USERNAME=""
+PASSWORD=""
+ATLAS_CLUSTER_URI=""
+# Set the date and time variables
+DATE=$(date +"%Y%m%d")
+TIME=$(date +"%H%M%S")
+
+# Set the backup directory path
+BACKUP_DIR="/home/ubuntu/mongodb_backup"
+
+# Create the backup directory if it doesn't exist
+mkdir -p $BACKUP_DIR
+
+# Run mongodump to create the backup
+mongodump --uri="mongodb+srv://$USERNAME:$PASSWORD@$ATLAS_CLUSTER_URI/?retryWrites=true&w=majority" --gzip --archive=$BACKUP_DIR/backup_${DATE}_${TIME}.archive
 ```
 
-Run the *development server* for React.
+And the script caa be configured to run automatically as per the users' wish
+
+From there you can send the archive to an s3 bucket for storage purpose.
+
 ```bash
-REACT_APP_API_URL=http://localhost:3000 npm start
+aws s3 cp /path/to/local/file s3://mongo-db-backups/filename-$(date +\%Y\%m\%d_\%H\%M\%S).archive
+
 ```
 
-View [http://localhost:4200](http://localhost:4200) on the browser.
+##You can make an ec2 instance unresponsive by;
 
-To make a production build, simply run on *react-src* folder via the terminal.
-```bash
-npm run build
-```
+Blocking all access to outbound traffic, that will make the ec2 instance unresponsive as it will not be able to communicate with any external system or the internet.
+And you can resolve it by allowing outbound traffic
 
-It re-creates a folder named *public* on the root directory. This is where the production-ready front-end of the web application resides.
-
-## Docker
-```bash
-docker-compose up
-```
-
-## Contribute
-Feel free to help out as I may have other work/life commitments. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## To Do
-
-- [x] Create
-- [x] Read
-- [x] Update
-- [x] Delete
-- [x] Real-time broadcast using Socket.io
-- [x] Deploy in Heroku
-- [x] Front-end validation (HTML)
-
-## License
-**MERN CRUD** is available under the **MIT** license. See the [LICENSE](LICENSE) file for more info.
