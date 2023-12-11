@@ -195,3 +195,9 @@ aws s3 cp /path/to/local/file s3://mongo-db-backups/filename-$(date +\%Y\%m\%d_\
 Blocking all access to outbound traffic, that will make the ec2 instance unresponsive as it will not be able to communicate with any external system or the internet.
 And you can resolve it by allowing outbound traffic
 
+
+
+Credits:
+
+The source code of this mern-crud application is gotten from this repository; https://github.com/cefjoeii/mern-crud.git
+
